@@ -1,0 +1,14 @@
+[Unit]
+Description=The PWM fan Script
+After=syslog.target
+ 
+[Service]
+Type=forking
+PIDFile=/var/run/fan.pid
+ExecStart=/bin/bash -c "/sbin/fan "&
+ExecReload=/bin/kill -s HUP 
+ExecStop=/bin/kill -s QUIT 
+PrivateTmp=true
+ 
+[Install]
+WantedBy=multi-user.target

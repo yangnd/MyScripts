@@ -1,0 +1,45 @@
+
+#!/bin/bash
+echo $$ > /var/run/fan.pid
+
+echo 85 > /sys/class/gpio/export
+echo "high" > /sys/class/gpio/gpio85/direction
+echo 85 > /sys/class/gpio/unexport
+
+echo 79 > /sys/class/gpio/export
+echo high > /sys/class/gpio/gpio79/direction
+echo 0 > /sys/class/pwm/pwmchip0/export
+echo 10000 > /sys/class/pwm/pwmchip0/pwm0/period
+echo normal > /sys/class/pwm/pwmchip0/pwm0/polarity
+echo 1 > /sys/class/pwm/pwmchip0/pwm0/enable
+
+hightemp=75000
+lowtemp=40000 
+speed=0
+while true
+do
+	temp=$(cat /sys/class/thermal/thermal_zone0/temp)
+#	if [ $temp -gt 70000 ]; then
+#		echo 10000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle;
+#	elif  [ $temp -gt 60000 ]; then
+#		echo 6000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle;
+#	elif  [ $temp -gt 55000 ]; then
+#		echo 4000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle;
+#	elif  [ $temp -gt 50000 ]; then
+#               echo 2000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle;
+#	else
+#		echo 0 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle;
+#	fi
+	if [ $temp -gt $hightemp ]; then
+		echo 10000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle;
+	elif [ $temp -lt $lowtemp ]; then
+		echo 0 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle;
+	elif [ $temp -lt 48750 ]; then
+                echo 2500 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle;
+	else
+		speed=$(((temp-lowtemp)*10000/(hightemp-lowtemp)));
+		echo $speed > /sys/class/pwm/pwmchip0/pwm0/duty_cycle;
+	fi
+	sleep 10
+done
+

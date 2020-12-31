@@ -1,0 +1,16 @@
+[Unit]
+Description=Lotus Service
+After=network.target
+
+[Service]
+Type=forking
+User=nobody
+PIDFile=/var/run/lotus.pid
+Restart=on-failure
+RestartSec=5s
+ExecStart=lotus daemon
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=lotus daemon stop
+[Install]
+WantedBy=multi-user.target
+
