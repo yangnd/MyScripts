@@ -14,6 +14,7 @@ __ipes_install() {
 		url=https://ipes-tus.iqiyi.com/update/ipes-linux-arm-llc-latest.tar.gz
 		file_path=/kuaicdn/res/ipes-linux-arm-llc-latest.tar.gz
     fi
+    echo $(uname -a)
     mkdir -p /kuaicdn/res /kuaicdn/app /kuaicdn/disk >/dev/null 2>&1
     rm -rf /kuaicdn/app/ipes >/dev/null 2>&1
 
