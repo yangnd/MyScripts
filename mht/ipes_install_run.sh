@@ -9,12 +9,18 @@ __ipes_install() {
 	#arm64
 		url=https://ipes-tus.iqiyi.com/update/ipes-linux-arm64-llc-latest.tar.gz
 		file_path=/kuaicdn/res/ipes-linux-arm64-llc-latest.tar.gz
-	else 
+	elif [ -n "$(uname -a | grep armv7)" ]; then 
 	#arm32
 		url=https://ipes-tus.iqiyi.com/update/ipes-linux-arm-llc-latest.tar.gz
 		file_path=/kuaicdn/res/ipes-linux-arm-llc-latest.tar.gz
+    else
+        echo $(uname -a)
+        echo "unsupported architecture"
+        echo "ipes install failed, exit 1"
+        exit 1
     fi
     echo $(uname -a)
+    echo $url
     mkdir -p /kuaicdn/res /kuaicdn/app /kuaicdn/disk >/dev/null 2>&1
     rm -rf /kuaicdn/app/ipes >/dev/null 2>&1
 
