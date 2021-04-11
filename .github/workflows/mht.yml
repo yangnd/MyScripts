@@ -42,6 +42,6 @@ jobs:
           imageName: yangnd89/mht
           dockerFile: mht/dockerfile
           platform: linux/amd64,linux/arm64,linux/arm
-          tag: latest,github
+          tag: latest,v0.1
           dockerUser: ${{ secrets.USERNAME }}
           dockerPassword: ${{ secrets.PASSWD }}
